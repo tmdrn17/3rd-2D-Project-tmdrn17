@@ -24,9 +24,9 @@ namespace HotteokSurvivor.Script.Manager_And_System
                 CurrentTime += Time.deltaTime;
             }
 
-            if (CurrentTime >= 600.0f)
+            if (CurrentTime >= 10.0f)
             {
-                Canvas.transform.GetChild(2).gameObject.SetActive(true);
+                Canvas.GetComponent<UIManager>().SetPanelActive(UIType.ClearMenu, true);
                 Destroy(PoolingSystem.gameObject);
                 Time.timeScale = 0;
             }

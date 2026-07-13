@@ -17,7 +17,7 @@ namespace HotteokSurvivor
 
         protected override void Move()
         {
-            transform.Translate(Vector3.up * shotSpeed * Time.deltaTime);
+            transform.Translate(Vector3.up * (shotSpeed * Time.deltaTime));
         }
 
         protected override void SendDamage()

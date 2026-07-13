@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3541e7b26d8da2d479efde979e474bd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HotteokSurvivor.MeleeEnemy
-  <hitRadius>k__BackingField: 0.77
+  <hitRadius>k__BackingField: 0.53
   FacingDirection: 1
   stoppingDistance: 0.1
   Stat:

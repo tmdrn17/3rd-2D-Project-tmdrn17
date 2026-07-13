@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Study.Utilities;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace HotteokSurvivor.Script.Manager_And_System
         public int haveHotteoksKind;
         public int[] hotteokLevel;
 
+        [SerializeField] private float[] hotteokCooldowns;
+
         [SerializeField] private Transform hotteokMuzzle;
         [SerializeField] private Transform[] enemySpawnPoints;
         [SerializeField] private Transform moneyParent;
@@ -30,6 +33,11 @@ namespace HotteokSurvivor.Script.Manager_And_System
 
         public List<Enemy> enemiseList = new List<Enemy>();
         private Dictionary<HotteokName, List<Hotteok>> hotteokDic = new Dictionary<HotteokName, List<Hotteok>>();
+        
+        // 각 호떡 타입별로 실행 중인 코루틴을 추적하는 Dictionary
+        // Key: 호떡 이름 (HotteokName enum), Value: 실행 중인 코루틴
+        // 목적: 같은 코루틴이 중복 실행되지 않도록 관리
+        private Dictionary<HotteokName, Coroutine> hotteokSpawnCoroutines = new Dictionary<HotteokName, Coroutine>();
         [SerializeField] private List<Money> moneyList = new List<Money>();
 
         private void Start()
@@ -88,7 +96,16 @@ namespace HotteokSurvivor.Script.Manager_And_System
 
             for (int i = 0; i < haveHotteoksKind; i++)
             {
-                SpawnHotteokByLevel(i);
+                HotteokName type = (HotteokName)i;
+                
+                // 해당 호떡 타입의 코루틴이 없거나 이미 종료된 경우에만 새 코루틴 시작
+                // ContainsKey(type): Dictionary에 해당 호떡의 코루틴 기록이 있는지 확인
+                // hotteokSpawnCoroutines[type] == null: 코루틴이 완료되었는지 확인
+                // → 중복 실행 방지: 같은 호떡의 코루틴이 동시에 여러 개 실행되지 않음
+                if (!hotteokSpawnCoroutines.ContainsKey(type) || hotteokSpawnCoroutines[type] == null)
+                {
+                    hotteokSpawnCoroutines[type] = StartCoroutine(SpawnHotteokByLevelCoroutine(i));
+                }
             }
         }
 
@@ -112,13 +129,10 @@ namespace HotteokSurvivor.Script.Manager_And_System
 
             for (int i = 0; i < currentLevel; i++)
             {
-                // 1. 딕셔너리에 해당 호떡 리스트가 이미 존재하는지 안전하게 확인
                 if (hotteokDic.TryGetValue(type, out List<Hotteok> hotteoksList))
                 {
-                    // 2. 인덱스 i가 현재 생성된 호떡 리스트 범위 내에 있는지 안전 검사
                     if (i < hotteoksList.Count)
                     {
-                        // 리스트에 이미 존재하는 호떡이 꺼져 있다면 새로 생성하지 않고 "재사용(활성화)"합니다.
                         if (hotteoksList[i] != null && !hotteoksList[i].gameObject.activeSelf)
                         {
                             hotteoksList[i].gameObject.SetActive(true);
@@ -126,15 +140,44 @@ namespace HotteokSurvivor.Script.Manager_And_System
                     }
                     else
                     {
-                        // 리스트 범위를 벗어난 경우 (레벨업으로 인해 새 호떡 슬롯이 필요한 경우)
                         AddHottoek(type, hotteoksPool[hotteokName].Get(true));
                     }
                 }
                 else
                 {
-                    // 3. 딕셔너리에 아예 리스트 자체가 없는 극초기 상태인 경우 새로 꺼내 추가합니다.
                     AddHottoek(type, hotteoksPool[hotteokName].Get(true));
                 }
+            }
+        }
+
+        /// <summary>
+        /// 각 호떡 타입별 고유한 쿨타임을 가지고 호떡을 반복 스폰하는 코루틴
+        /// 
+        /// 동작 흐름:
+        /// 1. SpawnHotteokByLevel(hotteokName) 실행 → 해당 호떡 스폰/활성화
+        /// 2. hotteokCooldowns 배열에서 해당 호떡의 쿨타임 조회
+        /// 3. WaitForSeconds(cooldown) → 쿨타임만큼 대기
+        /// 4. 2-3번 반복 (무한 루프)
+        /// 
+        /// 예시: hotteokCooldowns[0] = 0.5f이면
+        ///   - 호떡A 스폰 → 0.5초 대기 → 호떡A 스폰 → 0.5초 대기 → ...
+        /// </summary>
+        private IEnumerator SpawnHotteokByLevelCoroutine(int hotteokName)
+        {
+            while (true)
+            {
+                // 호떡 스폰/활성화 (기존 풀링 로직 유지)
+                SpawnHotteokByLevel(hotteokName);
+                
+                // 해당 호떡의 쿨타임 가져오기
+                // hotteokCooldowns 배열이 유효하고 인덱스가 범위 내면 설정된 값 사용
+                // 아니면 기본값 1초 사용
+                float cooldown = (hotteokCooldowns != null && hotteokName < hotteokCooldowns.Length) 
+                    ? hotteokCooldowns[hotteokName] 
+                    : 1f;
+                
+                // 쿨타임만큼 대기 (지정된 시간 동안 코루틴 일시 중지)
+                yield return new WaitForSeconds(cooldown);
             }
         }
 

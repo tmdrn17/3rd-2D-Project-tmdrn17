@@ -617,13 +617,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ff75524fc1e45147b57d8a2cd192d03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  uiPanels:
+  - type: 0
+    panelObject: {fileID: 998598074}
+  - type: 1
+    panelObject: {fileID: 1822549949}
+  - type: 2
+    panelObject: {fileID: 370456588}
+  - type: 3
+    panelObject: {fileID: 5671579621402728863}
+  - type: 4
+    panelObject: {fileID: 1869067973}
   audioSource: {fileID: 8637342885877645484}
   clickClips:
   - {fileID: 8300000, guid: f4781d302b303408d8b02da3dd8aed5a, type: 3}
   - {fileID: 8300000, guid: 262270ad62f914ce5a0a71e95e4bbfe6, type: 3}
   currentTimeText: {fileID: 1030194321}
-  endTimeText: {fileID: 99318009}
-  endLevelText: {fileID: 98605351}
+  endTimeText: {fileID: 0}
+  endLevelText: {fileID: 0}
   expSlider: {fileID: 1789608278}
 --- !u!1 &289708136
 GameObject:

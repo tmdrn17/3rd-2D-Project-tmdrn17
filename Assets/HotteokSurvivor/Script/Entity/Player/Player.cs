@@ -65,7 +65,7 @@ namespace HotteokSurvivor
             {
                 Vector3 moveVec = inputVector;
 
-                transform.Translate(moveVec.normalized * Stat.MoveSpeed * Time.deltaTime);
+                transform.Translate(moveVec.normalized * (Stat.MoveSpeed * Time.deltaTime));
 
                 spriteRenderer.flipX = (FacingDirection == -1) ? true : false;
 
@@ -81,8 +81,8 @@ namespace HotteokSurvivor
         {
             if (Stat.ApplyDamage(Mathf.Clamp(damage - Stat.DefensivePower, 0, damage)))
             {
-                GameManager.Instance.Canvas.transform.GetChild(1).gameObject.SetActive(true);
-                GameManager.Instance.Canvas.transform.GetChild(4).gameObject.SetActive(false);
+                GameManager.Instance.Canvas.GetComponent<UIManager>().SetPanelActive(UIType.OverMenu, true);
+                GameManager.Instance.Canvas.GetComponent<UIManager>().SetPanelActive(UIType.GameUI, false);
                 Destroy(GameManager.Instance.PoolingSystem.gameObject);
                 Time.timeScale = 0;
             }

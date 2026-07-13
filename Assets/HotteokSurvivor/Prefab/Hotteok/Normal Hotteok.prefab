@@ -109,5 +109,5 @@ MonoBehaviour:
   startPos: {fileID: 0}
   endDistance: 10
   shotSpeed: 10
-  hitRadius: 1
+  hitRadius: 0.2
   damage: 10

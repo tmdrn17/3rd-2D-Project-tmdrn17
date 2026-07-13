@@ -56,6 +56,7 @@ namespace HotteokSurvivor
 
         protected abstract void SendDamage();
 
+        // ReSharper disable Unity.PerformanceAnalysis
         protected void SearchEnemy()
         {
             // 1. 총알의 현재 방 번호 구하기

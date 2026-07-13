@@ -1715,6 +1715,9 @@ MonoBehaviour:
   yReplaceDistance: 13
   haveHotteoksKind: 1
   hotteokLevel: 0100000000000000
+  hotteokCooldowns:
+  - 0.5
+  - 0
   hotteokMuzzle: {fileID: 321297416}
   enemySpawnPoints:
   - {fileID: 1690043048}
