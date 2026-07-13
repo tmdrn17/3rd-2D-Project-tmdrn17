@@ -77,8 +77,7 @@ namespace HotteokSurvivor.Script.Manager_And_System
             GameManager gameManager = GameManager.Instance;
 
             HotteokRotate rotateHotteok = gameManager.Player.hotteokRotate;
-
-
+            
             switch (hotteokName)
             {
                 case (int)HotteokName.Normal:

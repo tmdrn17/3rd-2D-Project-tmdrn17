@@ -24,7 +24,7 @@ namespace HotteokSurvivor.Script.Manager_And_System
                 CurrentTime += Time.deltaTime;
             }
 
-            if (CurrentTime >= 10.0f)
+            if (CurrentTime >= 100.0f)
             {
                 Canvas.GetComponent<UIManager>().SetPanelActive(UIType.ClearMenu, true);
                 Destroy(PoolingSystem.gameObject);
@@ -34,7 +34,7 @@ namespace HotteokSurvivor.Script.Manager_And_System
 
         public void LevelUpPopUp()
         {
-            Canvas.transform.GetChild(3).gameObject.SetActive(true);
+            Canvas.GetComponent<UIManager>().SetPanelActive(UIType.LevelUpPopUp, true);
             Time.timeScale = 0;
         }
     }

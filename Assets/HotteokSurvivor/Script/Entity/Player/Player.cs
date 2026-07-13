@@ -102,6 +102,8 @@ namespace HotteokSurvivor
                     {
                         for (int i = 0; i < objects.Count; i++)
                         {
+                            if (objects[i] == null) continue;
+                            
                             if (objects[i].TryGetComponent<Money>(out _))
                             {
                                 money = objects[i].GetComponent<Money>();

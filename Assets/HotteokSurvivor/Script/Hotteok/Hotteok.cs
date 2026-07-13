@@ -15,7 +15,7 @@ namespace HotteokSurvivor
     public abstract class Hotteok : MonoBehaviour
     {
         [SerializeField] protected HotteokName name;
-        [SerializeField] protected Enemy enemy;
+        [SerializeField] public Enemy enemy;
 
         [SerializeField] protected Transform startPos;
         [SerializeField] protected float endDistance;
@@ -55,8 +55,7 @@ namespace HotteokSurvivor
         protected abstract void Move();
 
         protected abstract void SendDamage();
-
-        // ReSharper disable Unity.PerformanceAnalysis
+        
         protected void SearchEnemy()
         {
             // 1. 총알의 현재 방 번호 구하기
@@ -75,9 +74,12 @@ namespace HotteokSurvivor
                         // 3. 그 방에 있는 소수의 적들과만 거리 계산!
                         for (int i = 0; i < enemies.Count; i++)
                         {
+                            if (enemies[i] == null) continue;
+                            
                             if (enemies[i].TryGetComponent<Enemy>(out _))
                             {
                                 enemy = enemies[i].GetComponent<Enemy>();
+                                Debug.Log($"{enemy.name}");
 
                                 float sqrDistance = (transform.position - enemy.transform.position).sqrMagnitude;
                                 float combinedRadius = hitRadius + enemy.hitRadius;

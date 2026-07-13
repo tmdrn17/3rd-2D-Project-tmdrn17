@@ -38,7 +38,6 @@ namespace HotteokSurvivor.Script.Manager_And_System
         // Key: 호떡 이름 (HotteokName enum), Value: 실행 중인 코루틴
         // 목적: 같은 코루틴이 중복 실행되지 않도록 관리
         private Dictionary<HotteokName, Coroutine> hotteokSpawnCoroutines = new Dictionary<HotteokName, Coroutine>();
-        [SerializeField] private List<Money> moneyList = new List<Money>();
 
         private void Start()
         {
@@ -150,6 +149,17 @@ namespace HotteokSurvivor.Script.Manager_And_System
             }
         }
 
+        public void HotteokReset()
+        {
+            foreach (KeyValuePair<HotteokName, List<Hotteok>> entry in hotteokDic)
+            {
+                for (int i = 0; i < entry.Value.Count; i++)
+                {
+                    entry.Value[i].enemy = null;
+                }
+            }
+        }
+        
         /// <summary>
         /// 각 호떡 타입별 고유한 쿨타임을 가지고 호떡을 반복 스폰하는 코루틴
         /// 
