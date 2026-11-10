@@ -24,7 +24,8 @@ namespace HotteokSurvivor.Script.Manager_And_System
                 CurrentTime += Time.deltaTime;
             }
 
-            if (CurrentTime >= 100.0f)
+            // PoolingSystem이 이미 파괴됐다면 클리어 처리를 끝낸 것이므로 다시 실행하지 않음
+            if (CurrentTime >= 100.0f && PoolingSystem != null)
             {
                 Canvas.GetComponent<UIManager>().SetPanelActive(UIType.ClearMenu, true);
                 Destroy(PoolingSystem.gameObject);

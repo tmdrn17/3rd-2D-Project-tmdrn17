@@ -33,15 +33,17 @@ namespace HotteokSurvivor.Script.Manager_And_System
 
         public void DeleteToCell(Vector2Int cellIndex, GameObject cellObject)
         {
-            List<GameObject> enemies = Grid[cellIndex];
-
-            if (enemies.Count > 0)
+            // 명단이 없는 칸이면(예: Grid를 비운 뒤) 지울 것이 없음
+            if (!Grid.TryGetValue(cellIndex, out List<GameObject> enemies))
             {
-                enemies.Remove(cellObject);
+                return;
             }
-            else
+
+            enemies.Remove(cellObject);
+
+            // 빈 칸은 Dictionary에서 제거
+            if (enemies.Count == 0)
             {
-                enemies.Remove(cellObject);
                 Grid.Remove(cellIndex);
             }
         }

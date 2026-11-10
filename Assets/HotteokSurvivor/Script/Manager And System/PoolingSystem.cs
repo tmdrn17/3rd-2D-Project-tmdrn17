@@ -43,6 +43,9 @@ namespace HotteokSurvivor.Script.Manager_And_System
         {
             GameManager.Instance.PoolingSystem = this;
 
+            // GridManager는 씬이 바뀌어도 남아 있으므로, 이전 판의 적/돈 기록을 비우고 시작
+            GridManager.Instance.Grid.Clear();
+
             enemisePool = new ComponentPool<Enemy>[enemise.Length];
             hotteoksPool = new ComponentPool<Hotteok>[hotteoks.Length];
 
