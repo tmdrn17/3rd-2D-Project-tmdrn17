@@ -31,13 +31,13 @@ namespace HotteokSurvivor.Script.Manager_And_System
         private ComponentPool<Hotteok>[] hotteoksPool;
         public ComponentPool<Money> MoneyPool;
 
-        public List<Enemy> enemiseList = new List<Enemy>();
-        private Dictionary<HotteokName, List<Hotteok>> hotteokDic = new Dictionary<HotteokName, List<Hotteok>>();
+        public List<Enemy> enemiseList = new();
+        private Dictionary<HotteokName, List<Hotteok>> hotteokDic = new();
         
         // 각 호떡 타입별로 실행 중인 코루틴을 추적하는 Dictionary
         // Key: 호떡 이름 (HotteokName enum), Value: 실행 중인 코루틴
         // 목적: 같은 코루틴이 중복 실행되지 않도록 관리
-        private Dictionary<HotteokName, Coroutine> hotteokSpawnCoroutines = new Dictionary<HotteokName, Coroutine>();
+        private Dictionary<HotteokName, Coroutine> hotteokSpawnCoroutines = new();
 
         private void Start()
         {
