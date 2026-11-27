@@ -31,10 +31,15 @@ namespace HotteokSurvivor
 
         private Animator animator;
 
+        private void Awake()
+        {
+            // 적들이 PoolingSystem.Start에서 생성되며 Target을 읽기 전에 등록되도록 Awake에서 처리
+            GameManager.Instance.Player = this;
+        }
+
         private void Start()
         {
             Stat.ResetToFull();
-            GameManager.Instance.Player = this;
             animator = GetComponent<Animator>();
             spriteRenderer = GetComponent<SpriteRenderer>();
         }
